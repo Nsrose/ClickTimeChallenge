@@ -23,3 +23,6 @@ span {
 #task_submit {
     cursor: pointer;
 }
+.result_html {
+    display: none;
+}

@@ -3,9 +3,6 @@ var UserID = null;
 var CompanyID = null;
 var baseURL = null;
 
-var allJobs = null;
-var allClients = null;
-
 // Dictionary of taskIDs to jobs
 // Each taskID has a list of valid jobs attached to it.
 var jobDict = {};
@@ -24,7 +21,6 @@ $.ajax(apibase + '/session', {
         $.ajax(url, {
             dataType:'jsonp',
             success: function(response) {
-                allJobs = response;
                 for (x in response) {
                     var job = response[x];
                     addToJobDict(job);
@@ -35,7 +31,6 @@ $.ajax(apibase + '/session', {
         $.ajax(url, {
             dataType:'jsonp',
             success: function(response) {
-                allClients = response;
                 for (x in response) {
                     var client = response[x];
                     addToClientDict(client);
@@ -76,41 +71,22 @@ function processTasks(tasks, input) {
     return task;
 }
 
-// Returns true iff a job JOB has a given taskID in its
-// permitted tasks lists. 
-function containsTask(job, taskID) {
-    var permittedList = job.PermittedTasks.split(",");
-    for (x in permittedList) {
-        if (permittedList[x] == taskID) {
-            return true;
-        }
-    }
-    return false;
-}
-
-// Returns list of all jobs that have a permitted task of taskID.
-function getJobsByID(taskID) {
-    var result = [];
-    for (x in allJobs) {
-        if (containsTask(allJobs[x], taskID)) {
-            result.push(allJobs[x]);
-        }
-    }
-    return result;
-}
-
 
 $(document).ready(function(){
     // Jobs from the most recent task query
     var jobs = [];
     // Clients from the most recent task query
     var clients = [];
+    // The next numbered div to insert for IDing.
+    var nextID = 0;
 
     // Gets correct task id or raises alert if none. 
     // Filters out clients and jobs accordingly.
     $("#task_submit").click(function() {
         jobs = [];
         clients = [];
+        nextID = 0;
+        $("#results_container").empty();
         var taskName = $("#task_input").val();
         var url = baseURL + "/Tasks";
         $.ajax(url, {
@@ -124,16 +100,24 @@ $(document).ready(function(){
                     for (x in jobs) {
                         var clientID = jobs[x].ClientID;
                         clients.push(clientDict[clientID]);
-                        console.log("Jobs:");
-                        console.log(jobs);
-                        console.log("Clients:");
-                        console.log(clients);
+                        addResult(jobs[x], clientDict[clientID]);
                     }
                 }
             }
         })
     })
 
+
+    // Add result containing a job and a client to the html body
+    // in the results container. 
+    function addResult(job, client) {
+        var $div = $(".result_html .result_box").clone();
+        $div.attr('id', "result_box_" + nextID);
+        $div.find(".result_job_box .result_item_name").text(job.Name);
+        $div.find(".result_client_box .result_item_name").text(client.Name);
+        $("#results_container").append($div);
+        nextID += 1;
+    }
     
 
 });
