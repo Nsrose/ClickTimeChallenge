@@ -107,7 +107,6 @@ $(document).ready(function(){
         })
     })
 
-
     // Add result containing a job and a client to the html body
     // in the results container. 
     function addResult(job, client) {
@@ -118,6 +117,17 @@ $(document).ready(function(){
         $("#results_container").append($div);
         nextID += 1;
     }
+
+    // Style effects:
+    $(function() {
+       var searchs = ['Coding', 'Market Research', 'Manufacturing'];
+       var time = setInterval(function() {
+           var newSearch = searchs[Math.floor(Math.random()*searchs.length)];
+           $('#task_input').attr('placeholder', newSearch);
+       },5000);
+
+    });
+
     
 
 });
