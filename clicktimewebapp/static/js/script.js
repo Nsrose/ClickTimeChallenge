@@ -77,6 +77,9 @@ $(document).ready(function(){
     var jobs = [];
     // Clients from the most recent task query
     var clients = [];
+    // A list of all tasks from the first query. If empty, user
+    // hasn't clicked "go" yet.
+    var allTasks = [];
     // The next numbered div to insert for IDing.
     var nextID = 0;
 
@@ -88,25 +91,35 @@ $(document).ready(function(){
         nextID = 0;
         $("#results_container").empty();
         var taskName = $("#task_input").val();
-        var url = baseURL + "/Tasks";
-        $.ajax(url, {
-            dataType:'jsonp',
-            success: function(response) {
-                var task = processTasks(response, taskName);
-                if (task == null) {
-                    alert("sorry, couldn't find that task");
-                } else {
-                    closeCover();
-                    var jobs = jobDict[task.TaskID];
-                    for (x in jobs) {
-                        var clientID = jobs[x].ClientID;
-                        clients.push(clientDict[clientID]);
-                        addResult(jobs[x], clientDict[clientID]);
-                    }
+        if (allTasks.length == 0) {
+            var url = baseURL + "/Tasks";
+            $.ajax(url, {
+                dataType:'jsonp',
+                success: function(response) {
+                    allTasks = response;
+                    getResults(taskName);
                 }
-            }
-        })
+            })
+        } else {
+            getResults(taskName);
+        }
     })
+
+    // Returns results of a task query.
+    function getResults(taskName) {
+        var task = processTasks(allTasks, taskName);
+        if (task == null) {
+            alert("sorry, couldn't find that task");
+        } else {
+            closeCover();
+            var jobs = jobDict[task.TaskID];
+            for (x in jobs) {
+                var clientID = jobs[x].ClientID;
+                clients.push(clientDict[clientID]);
+                addResult(jobs[x], clientDict[clientID]);
+            }
+        }
+    }
 
     // Add result containing a job and a client to the html body
     // in the results container. 
@@ -146,6 +159,7 @@ $(document).ready(function(){
         $("#results_title").fadeIn(400);
     }
 
+    // Reopen the cover and display the search
     $("#search_again").click(function() {
         $("#results_title").fadeOut(400);
         $("#search_again").hide();
