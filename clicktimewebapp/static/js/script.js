@@ -96,6 +96,7 @@ $(document).ready(function(){
                 if (task == null) {
                     alert("sorry, couldn't find that task");
                 } else {
+                    closeCover();
                     var jobs = jobDict[task.TaskID];
                     for (x in jobs) {
                         var clientID = jobs[x].ClientID;
@@ -118,15 +119,43 @@ $(document).ready(function(){
         nextID += 1;
     }
 
-    // Style effects:
+    ///////////////////////////
+    ///// Style effects: /////
+    /////////////////////////
+
+    // Switch words in search box:
     $(function() {
-       var searchs = ['Coding', 'Market Research', 'Manufacturing'];
+       var searchs = ["Aerodynamics Design", 'Market Research', "Clay Model",
+       "Computer Model Design", "Drafting"];
        var time = setInterval(function() {
            var newSearch = searchs[Math.floor(Math.random()*searchs.length)];
            $('#task_input').attr('placeholder', newSearch);
-       },5000);
+       },3000);
 
     });
+
+    // Close the cover and display the results
+    function closeCover() {
+        $("#cover").css({
+            "height":"0px",
+        });
+        $("#results_container").css({
+            "height":"100%",
+        })
+        $("#search_again").show();
+        $("#results_title").fadeIn(400);
+    }
+
+    $("#search_again").click(function() {
+        $("#results_title").fadeOut(400);
+        $("#search_again").hide();
+        $("#results_container").css({
+            "height":"0px",
+        })
+        $("#cover").css({
+            "height":"100%",
+        })
+    })
 
     
 

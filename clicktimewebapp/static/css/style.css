@@ -21,13 +21,12 @@ body {
     display: block;
 }
 
-span {
-    padding-left: 5px;
-}
 #task_submit {
     cursor: pointer;
     width: 40px;
     float: left;
+    -webkit-transition: 0.25s;
+    transition: 0.25s;
 }
 .result_html {
     display: none;
@@ -57,6 +56,7 @@ span {
     position: relative;
     transition: 0.5s;
     -webkit-transition: 0.5s;
+    overflow: auto;
 }
 
 #task_form {
@@ -109,8 +109,66 @@ span {
     width: 100%;
     text-align: center;
     background: rgba(0,0,0,.4);
+    z-index: 100;
 }
+
+div#footer {}
 #rose_image {
     width: 20px;
     padding-left: 15px;
+}
+.result_box {
+    margin-left: auto;
+    margin-right: auto;
+    width: 400px;
+    margin-top: 50px;
+    border: 1px solid grey;
+    border-radius: 4px;
+    padding: 20px;
+}
+
+.result_job_box {
+    display: inline-block;
+    margin-right: 40px;
+    width: 150px;
+}
+
+.result_client_box {
+    display: inline-block;
+    margin-left: 40px;
+    width: 15px;
+    vertical-align: top;
+}
+
+#results_container {
+    font-size: 25px;
+    font-weight: 100;
+    overflow: scroll;
+    height:0px;
+    position: relative;
+}
+#search_again {
+    display: none;
+    position: absolute;
+    top: 75%;
+    text-align: center;
+    right: 300px;
+    -webkit-transition: 0.25s;
+    transition: .25s;
+    cursor: pointer;
+}
+#search_again:hover {
+    color: rgba(125, 249, 255, 1);
+}
+#task_submit:hover {
+    color: rgba(125, 249, 255, 1);
+}
+#results_title {
+    position: absolute;
+    top: 0;
+    font-size: 36px;
+    font-weight: 100;
+    text-align: center;
+    width: 100%;
+    display:none;
 }
