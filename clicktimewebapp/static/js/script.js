@@ -35,6 +35,7 @@ $.ajax(apibase + '/session', {
                     var client = response[x];
                     addToClientDict(client);
                 }
+                $("#page_loading").fadeOut(400);
             }
         })
     }
@@ -73,10 +74,6 @@ function processTasks(tasks, input) {
 
 
 $(document).ready(function(){
-    // Clear the loading screen
-    $("#page_loading").fadeOut(400);
-
-
     // Jobs from the most recent task query
     var jobs = [];
     // Clients from the most recent task query
