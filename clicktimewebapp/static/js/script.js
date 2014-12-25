@@ -73,6 +73,10 @@ function processTasks(tasks, input) {
 
 
 $(document).ready(function(){
+    // Clear the loading screen
+    $("#page_loading").fadeOut(400);
+
+
     // Jobs from the most recent task query
     var jobs = [];
     // Clients from the most recent task query
@@ -104,6 +108,14 @@ $(document).ready(function(){
             getResults(taskName);
         }
     })
+
+    // Activate above on enter
+    $('#task_input').keypress(function (e) {
+        if (e.which == 13) {
+            $("#task_submit").click();
+            return false;
+        }
+    });
 
     // Returns results of a task query.
     function getResults(taskName) {
